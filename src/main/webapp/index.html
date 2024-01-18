@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Management System</title>
+</head>
+<body>
+<h1>Welcome to Warehouse Management System</h1>
+
+<div id="warehouses-list"></div>
+
+<script>
+    const socket = new WebSocket("ws://localhost:8080/ColossusTechnologiesInc/warehouseWebSocket");
+
+    socket.onmessage = function (event) {
+        const warehouses = JSON.parse(event.data);
+
+        document.getElementById("warehouses-list").innerHTML = "";
+
+        warehouses.forEach(function (warehouse) {
+            const warehouseElement = document.createElement("div");
+            warehouseElement.innerHTML = `<p>${warehouse.name} - ${warehouse.city}, ${warehouse.country}</p>`;
+            document.getElementById("warehouses-list").appendChild(warehouseElement);
+        });
+    };
+</script>
+</body>
+</html>
