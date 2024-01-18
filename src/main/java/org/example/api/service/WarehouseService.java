@@ -2,11 +2,14 @@ package org.example.api.service;
 
 import org.example.api.dao.WarehouseDAO;
 import org.example.api.model.Warehouse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class WarehouseService {
     private final WarehouseDAO warehouseDAO;
+    private static final Logger logger = LoggerFactory.getLogger(WarehouseService.class);
 
     public WarehouseService() {
         this.warehouseDAO = new WarehouseDAO();
@@ -29,10 +32,10 @@ public class WarehouseService {
             if (isNameUnique(warehouse.getName())) {
                 warehouseDAO.addWarehouse(warehouse);
             } else {
-                System.out.println("Error: Warehouse with this name is already exist.");
+                logger.error("Error: Warehouse with this name is already exist.");
             }
         } else {
-            System.out.println("Error: Wrong data for creation.");
+            logger.error("Error: Wrong data for creation.");
         }
     }
 
@@ -41,10 +44,10 @@ public class WarehouseService {
             if (isNameUniqueForUpdate(warehouse.getWarehouseId(), warehouse.getName())) {
                 warehouseDAO.updateWarehouse(warehouse);
             } else {
-                System.out.println("Error: Warehouse with this name is already exist.");
+                logger.error("Error: Warehouse with this name is already exist.");
             }
         } else {
-            System.out.println("Error: Wrong data for update warehouse.");
+            logger.error("Error: Wrong data for update warehouse.");
         }
     }
 
@@ -52,7 +55,7 @@ public class WarehouseService {
         if (isWarehouseEmpty(id)) {
             warehouseDAO.deleteWarehouse(id);
         } else {
-            System.out.println("Error: Can not delete warehouse, because it contains goods.");
+            logger.error("Error: Can not delete warehouse, because it contains goods.");
         }
     }
 

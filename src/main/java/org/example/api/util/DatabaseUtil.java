@@ -1,10 +1,17 @@
 package org.example.api.util;
 
+import org.example.api.service.WarehouseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class DatabaseUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseUtil.class);
+
     public static String getConnectionUrl() {
         try (InputStream input = DatabaseUtil.class.getClassLoader()
                 .getResourceAsStream("application.properties")) {
@@ -12,7 +19,7 @@ public class DatabaseUtil {
             Properties prop = new Properties();
 
             if (input == null) {
-                System.out.println("Sorry, unable to find application.properties");
+                logger.error("Sorry, unable to find application.properties");
                 return null;
             }
 
@@ -26,7 +33,7 @@ public class DatabaseUtil {
                     prop.getProperty("postgres.db.database") +
                     "?currentSchema=public";
         } catch (IOException ex) {
-            System.out.println("Sorry, unable to set connection to database %s%n"+ex.getMessage());
+            logger.error("Sorry, unable to set connection to database %s%n"+ex);
             return null;
         }
     }
@@ -38,7 +45,7 @@ public class DatabaseUtil {
             Properties prop = new Properties();
 
             if (input == null) {
-                System.out.println("Sorry, unable to find application.properties");
+                logger.error("Sorry, unable to find application.properties");
                 return null;
             }
 
@@ -46,7 +53,7 @@ public class DatabaseUtil {
 
             return prop.getProperty("postgres.db.username");
         } catch (IOException ex) {
-            System.out.println("Sorry, unable to get user for database %s%n"+ex.getMessage());
+            logger.error("Sorry, unable to get user for database %s%n"+ex);
             return null;
         }
     }
@@ -58,7 +65,7 @@ public class DatabaseUtil {
             Properties prop = new Properties();
 
             if (input == null) {
-                System.out.println("Sorry, unable to find application.properties");
+                logger.error("Sorry, unable to find application.properties");
                 return null;
             }
 
@@ -66,7 +73,7 @@ public class DatabaseUtil {
 
             return prop.getProperty("postgres.db.password");
         } catch (IOException ex) {
-            System.out.println("Sorry, unable to get password for database %s%n"+ex.getMessage());
+            logger.error("Sorry, unable to get password for database %s%n"+ex);
             return null;
         }
     }

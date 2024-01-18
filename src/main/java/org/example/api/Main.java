@@ -4,7 +4,6 @@ import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.HandlesTypes;
 import javax.servlet.annotation.WebListener;
 import javax.websocket.server.ServerEndpoint;

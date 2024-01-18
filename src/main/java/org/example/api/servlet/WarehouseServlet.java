@@ -26,6 +26,14 @@ public class WarehouseServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String idParam = req.getParameter("id");
 
+        String nameParam = req.getParameter("name");
+        String addressParam = req.getParameter("address");
+        String cityParam = req.getParameter("city");
+        String stateParam = req.getParameter("state");
+        String countryParam = req.getParameter("country");
+        int limitParam = Integer.parseInt(req.getParameter("limit"));
+        int offsetParam = Integer.parseInt(req.getParameter("offset"));
+
         String sortBy = req.getParameter("sortBy");
         String sortOrder = req.getParameter("sortOrder");
 
@@ -38,7 +46,16 @@ public class WarehouseServlet extends HttpServlet {
             } else {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
-        } else {
+        } else if(nameParam != null || addressParam != null || cityParam != null || stateParam != null || countryParam != null){
+            List<Warehouse> warehouses = warehouseService.getWarehousesByFilter(nameParam, addressParam, cityParam, stateParam, countryParam, limitParam, offsetParam, sortBy, sortOrder);
+
+            if (warehouses != null) {
+                for(Warehouse warehouse: warehouses) resp.getWriter().write(objectMapper.writeValueAsString(warehouse));
+            } else {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
+        }
+        else {
             List<Warehouse> warehouses = warehouseService.getAllWarehouses(sortBy, sortOrder);
             resp.setContentType("application/json");
             resp.getWriter().write(objectMapper.writeValueAsString(warehouses));

@@ -140,8 +140,7 @@ public class WarehouseDAO {
 
     public List<Warehouse> getAllWarehouses(String sortBy, String sortOrder) {
         List<Warehouse> warehouses = new ArrayList<>();
-        try (Connection connection = getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Connection connection = getConnection()) {
 
             String query = "SELECT * FROM warehouse";
             if (sortBy != null && sortOrder != null) {
@@ -153,11 +152,10 @@ public class WarehouseDAO {
                     preparedStatement.setString(1, sortBy);
                 }
 
-                ResultSet resultSet = statement.executeQuery(query);
+                ResultSet resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()) {
-                    Warehouse warehouse = mapResultSetToWarehouse(resultSet);
-                    warehouses.add(warehouse);
+                    warehouses.add(mapResultSetToWarehouse(resultSet));
                 }
             }
         } catch (SQLException e) {
